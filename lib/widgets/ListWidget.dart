@@ -12,7 +12,7 @@ class _ListWidgetState extends State<ListWidget> {
 
   _ListWidgetState(
       {this.listName = "List Name",
-      this.listColor = Colors.blue,
+      this.listColor = Colors.red,
       this.itemCount = 2});
 
   @override

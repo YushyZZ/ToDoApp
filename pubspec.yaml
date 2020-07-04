@@ -49,6 +49,7 @@ flutter:
   assets:
     - assets/img/clock_disabled.png
     - assets/img/clock_enabled.png
+    - assets/img/plus.png
      
 
   # An image asset can refer to one or more resolution-specific "variants", see

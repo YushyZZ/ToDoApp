@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Appbar.dart';
 import 'HomeBody.dart';
+import "AbsorbedHome.dart";
+import "./widgets/createTaskListMenu.dart";
 
 void main() {
   runApp(ToDoApp());
@@ -18,14 +20,51 @@ class _ToDoAppState extends State<ToDoApp> {
   }
 }
 
-class ToDoAppHome extends StatelessWidget {
+class ToDoAppHome extends StatefulWidget {
+  @override
+  _ToDoAppHomeState createState() => _ToDoAppHomeState();
+}
+
+class _ToDoAppHomeState extends State<ToDoAppHome> {
+  bool isPressedFloating = false;
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
     return Scaffold(
-      appBar: PreferredSize(child: Appbar(size: size,),preferredSize: Size(size.width,size.height*0.09),),
+      appBar: PreferredSize(
+        child: Appbar(
+          size: size,
+        ),
+        preferredSize: Size(size.width, size.height * 0.09),
+      ),
       backgroundColor: Colors.white,
-      body: ToDoAppHomeBody()
+      body: Stack(children: <Widget>[
+        (isPressedFloating == true)
+            ? AbdorbedHome(size: size)
+            : ToDoAppHomeBody(),
+        (isPressedFloating == true)
+            ? CreateTaskListMenu(size: size)
+            : Container()
+      ]),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          print(isPressedFloating);
+          setState(() {
+            if (isPressedFloating == true) {
+              isPressedFloating = false;
+            } else if (isPressedFloating == false) {
+              isPressedFloating = true;
+            }
+          });
+        },
+        backgroundColor: Colors.blue,
+        child: Image.asset(
+          "assets/img/plus.png",
+          height: 40,
+          width: 40,
+        ),
+      ),
     );
   }
 }

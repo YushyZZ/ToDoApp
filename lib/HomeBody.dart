@@ -32,7 +32,7 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
             child: Column(
               children: <Widget>[
                 Container(
-                  margin: EdgeInsets.only(right: size.height * 0.3),
+                  margin: EdgeInsets.only(right: size.width * 0.65),
                   height: size.height * 0.05,
                   child: Text(
                     "Lists",
