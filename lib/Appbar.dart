@@ -12,7 +12,7 @@ class Appbar extends StatelessWidget {
   Widget build(BuildContext context) {
     return AppBar(
       title: Container(
-          margin: EdgeInsets.only(left: size.width * 0.16),
+          margin: EdgeInsets.only(left: size.width * 0.08 ),
           child: Text(
             "Today",
             style: TextStyle(
