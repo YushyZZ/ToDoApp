@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import './widgets/TaskWidget.dart';
 import './widgets/ListWidget.dart';
+import "./models/tasks.dart";
+import "./models/lists.dart";
 
 class ToDoAppHomeBody extends StatefulWidget {
   @override
@@ -21,9 +23,9 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
             height: size.height * 0.33,
             child: ListView.builder(
               itemBuilder: (BuildContext ctxt, int index) {
-                return new TaskWidget();
+                return new TaskWidget(tasks[index]["taskName"],tasks[index]["isScheduled"],tasks[index]["time"],tasks[index]["listColor"]);
               },
-              itemCount: 7,
+              itemCount: tasks.length,
             ),
           ),
           Spacer(),
@@ -47,9 +49,9 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
                   color: Colors.white,
                   height: size.height * 0.48,
                   child: ListView.builder(
-                      itemCount: 7,
+                      itemCount: lists.length,
                       itemBuilder: (BuildContext ctxt, int index) {
-                        return new ListWidget();
+                        return new ListWidget(lists[index]["listName"],lists[index]["listColor"],lists[index]["itemCount"],);
                       }),
                 )
               ],

@@ -1,8 +1,16 @@
 import 'package:flutter/material.dart';
 
 class TaskWidget extends StatefulWidget {
+  final String taskName;
+  final bool isScheduled;
+  final String time;
+  final Color listColor;
+
+  TaskWidget(this.taskName, this.isScheduled, this.time, this.listColor);
+
   @override
-  _TaskWidgetState createState() => _TaskWidgetState();
+  _TaskWidgetState createState() =>
+      _TaskWidgetState(taskName, isScheduled, time, listColor);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
@@ -13,11 +21,7 @@ class _TaskWidgetState extends State<TaskWidget> {
   final String time;
   final Color listColor;
 
-  _TaskWidgetState(
-      {this.taskName = "Taskname",
-      this.isScheduled = true,
-      this.time = " 00:00",
-      this.listColor = Colors.purple});
+  _TaskWidgetState(this.taskName, this.isScheduled, this.time, this.listColor);
 
   @override
   Widget build(BuildContext context) {
@@ -48,13 +52,18 @@ class _TaskWidgetState extends State<TaskWidget> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
-                        Text(
-                          "$taskName",
-                          style: TextStyle(
-                              color:
-                                  (!checkboxvalue) ? Colors.black : Colors.grey,
-                              fontSize: 20,
-                              fontWeight: FontWeight.bold),
+                        Container(
+                          
+                          width: size.width*0.8,
+                          child: Text(
+                            "$taskName",
+                            style: TextStyle(
+                                color: (!checkboxvalue)
+                                    ? Colors.black
+                                    : Colors.grey,
+                                fontSize: 20,
+                                fontWeight: FontWeight.bold),
+                          ),
                         ),
                         isScheduled
                             ? Row(
@@ -82,7 +91,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: size.width * 0.57),
+                    margin: EdgeInsets.only(left: size.width * 0.01),
                     child: SizedBox(
                       height: 13,
                       width: 13,

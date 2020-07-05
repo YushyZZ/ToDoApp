@@ -19,7 +19,7 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
       {this.taskName = "Taskname",
       this.isScheduled = true,
       this.time = " 00:00",
-      this.listColor = Colors.purple,
+      this.listColor = Colors.transparent,
       this.isDated = true,
       this.date = "01.01.2020"});
 

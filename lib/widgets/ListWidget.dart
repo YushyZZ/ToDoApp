@@ -2,8 +2,17 @@ import 'package:ToDoApp/widgets/TaskWidgetonListScreen.dart';
 import 'package:flutter/material.dart';
 
 class ListWidget extends StatefulWidget {
+  final String listName;
+  final Color listColor;
+  final int itemCount;
+
+  ListWidget(
+      this.listName,
+      this.listColor,
+      this.itemCount);
+
   @override
-  _ListWidgetState createState() => _ListWidgetState();
+  _ListWidgetState createState() => _ListWidgetState(listName,listColor,itemCount);
 }
 
 class _ListWidgetState extends State<ListWidget> {
@@ -12,9 +21,9 @@ class _ListWidgetState extends State<ListWidget> {
   final int itemCount;
 
   _ListWidgetState(
-      {this.listName = "List Name",
-      this.listColor = Colors.purple,
-      this.itemCount = 2});
+      this.listName,
+      this.listColor,
+      this.itemCount);
 
   @override
   Widget build(BuildContext context) {
@@ -47,7 +56,7 @@ class _ListWidgetState extends State<ListWidget> {
             Container(
               margin: EdgeInsets.only(left: 10, top: 5),
               child: Text(
-                "$itemCount tasks",
+                "${itemCount.toString()} tasks",
                 style: TextStyle(color: Colors.white),
               ),
             )
@@ -133,7 +142,7 @@ void _modalBottomSheetMenu(context, size, listColor, listName, itemCount) {
                     height: size.height * 0.775,
                     width: size.width * 1,
                     child: ListView.builder(
-                        itemCount: 4,
+                        itemCount: itemCount,
                         itemBuilder: (BuildContext ctxt, int index) {
                           return new TaskWidgetOnList();
                         }),
