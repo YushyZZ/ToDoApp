@@ -17,7 +17,7 @@ class _TaskWidgetState extends State<TaskWidget> {
       {this.taskName = "Taskname",
       this.isScheduled = true,
       this.time = " 00:00",
-      this.listColor = Colors.red});
+      this.listColor = Colors.purple});
 
   @override
   Widget build(BuildContext context) {
@@ -82,14 +82,14 @@ class _TaskWidgetState extends State<TaskWidget> {
                     ),
                   ),
                   Container(
-                    margin: EdgeInsets.only(left: size.width * 0.52),
+                    margin: EdgeInsets.only(left: size.width * 0.57),
                     child: SizedBox(
                       height: 13,
                       width: 13,
                       child: RaisedButton(
                         color: listColor,
                         onPressed: null,
-                        disabledColor: Colors.red,
+                        disabledColor: listColor,
                         shape: CircleBorder(),
                       ),
                     ),
