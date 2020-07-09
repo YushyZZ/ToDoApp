@@ -1,4 +1,4 @@
-import 'package:ToDoApp/widgets/TaskWidgetonListScreen.dart';
+import 'package:ToDoApp/widgets/TaskWidgetonListPage.dart';
 import 'package:flutter/material.dart';
 import '../models/tasks.dart';
 
@@ -81,19 +81,17 @@ class ListPage extends StatelessWidget {
                   child: ListView.builder(
                     itemCount: itemCount,
                     itemBuilder: (BuildContext ctxt, int index) {
-                      for (var index = 0;
-                          index <= tasks.length - 1;
-                          index += 1) {
-                        if (tasks[index]["listName"] == listName) {
-                          return new TaskWidgetOnList(
-                              tasks[index]["taskName"],
-                              tasks[index]["isScheduled"],
-                              tasks[index]["time"],
-                              tasks[index]["listColor"],
-                              tasks[index]["isDated"],
-                              tasks[index]["date"],
-                              tasks[index]["isDone"],);
-                        }
+        
+                      if (tasks[index]["listName"] == listName) {
+                        return new TaskWidgetOnList(
+                            tasks[index]["taskName"],
+                            tasks[index]["isScheduled"],
+                            tasks[index]["time"],
+                            tasks[index]["listColor"],
+                            tasks[index]["isDated"],
+                            tasks[index]["date"],
+                            tasks[index]["isDone"],);
+                        
                       }
                      return null; 
                     },
