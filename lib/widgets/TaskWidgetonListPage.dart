@@ -1,8 +1,27 @@
 import 'package:flutter/material.dart';
+import '../models/tasks.dart';
 
 class TaskWidgetOnList extends StatefulWidget {
+  final String taskName;
+  final bool isScheduled;
+  final String time;
+  final Color listColor;
+  final bool isDated;
+  final String date;
+  bool isDone;
+
+  TaskWidgetOnList(this.taskName, this.isScheduled, this.time, this.listColor,
+      this.isDated, this.date, this.isDone);
+
   @override
-  _TaskWidgetOnListState createState() => _TaskWidgetOnListState();
+  _TaskWidgetOnListState createState() => _TaskWidgetOnListState(
+      this.taskName,
+      this.isScheduled,
+      this.time,
+      this.listColor,
+      this.isDated,
+      this.date,
+      this.isDone);
 }
 
 class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
@@ -14,14 +33,10 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   final Color listColor;
   final bool isDated;
   final String date;
+  bool isDone;
 
-  _TaskWidgetOnListState(
-      {this.taskName = "Taskname",
-      this.isScheduled = true,
-      this.time = " 00:00",
-      this.listColor = Colors.transparent,
-      this.isDated = true,
-      this.date = "01.01.2020"});
+  _TaskWidgetOnListState(this.taskName, this.isScheduled, this.time,
+      this.listColor, this.isDated, this.date, this.isDone);
 
   @override
   Widget build(BuildContext context) {
@@ -42,15 +57,9 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                 color: Colors.transparent,
                 border: Border.all(width: 3, color: Colors.white)),
             child: Checkbox(
-              value: checkboxvalue,
-              materialTapTargetSize: MaterialTapTargetSize.padded,
-              onChanged: (bool value) {
-                print(value);
-                setState(() {
-                  checkboxvalue = value;
-                });
-              },
-            ),
+                value: isDone,
+                materialTapTargetSize: MaterialTapTargetSize.padded,
+                onChanged: null),
           ),
           Column(children: <Widget>[
             Container(
@@ -77,11 +86,14 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
-                                      Icon(Icons.date_range , color: Colors.grey, size: 17,),
+                                      Icon(
+                                        Icons.date_range,
+                                        color: Colors.grey,
+                                        size: 17,
+                                      ),
                                       Text(
                                         " $date",
-                                        style: TextStyle(
-                                            color: Colors.grey),
+                                        style: TextStyle(color: Colors.grey),
                                       )
                                     ],
                                   ),
@@ -89,20 +101,21 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                               : Text(""),
                           isScheduled
                               ? Container(
-                                  padding:
-                                      EdgeInsets.only(left: isDated ? size.width * 0.02 : size.width*0),
+                                  padding: EdgeInsets.only(
+                                      left: isDated
+                                          ? size.width * 0.02
+                                          : size.width * 0),
                                   child: Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceEvenly,
                                     children: <Widget>[
                                       Image(
                                         image: AssetImage(
-                                                "assets/img/clock_disabled.png"),
+                                            "assets/img/clock_disabled.png"),
                                       ),
                                       Text(
                                         "$time",
-                                        style: TextStyle(
-                                            color:Colors.grey),
+                                        style: TextStyle(color: Colors.grey),
                                       )
                                     ],
                                   ),

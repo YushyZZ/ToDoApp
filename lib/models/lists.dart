@@ -4,37 +4,43 @@ List lists = [
   {
     "listName": "School",
     "listColor": Colors.blue,
-    "itemCount": 1,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
   {
     "listName": "Work",
     "listColor": Colors.orange,
-    "itemCount": 2,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
   {
     "listName": "Home",
     "listColor": Colors.yellow,
-    "itemCount": 4,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
   {
     "listName": "Relationship",
     "listColor": Colors.pink,
-    "itemCount": 3,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
   {
     "listName": "Shopping",
     "listColor": Colors.black,
-    "itemCount": 1,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
    {
     "listName": "Self Learning",
     "listColor": Colors.green,
-    "itemCount": 2,
+    "itemCount": 0,
+    "isSelectedOnCreateScreen" : false
     
   },
 ];

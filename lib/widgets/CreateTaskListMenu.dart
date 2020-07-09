@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+
+
 class CreateTaskListMenu extends StatelessWidget {
   const CreateTaskListMenu({
     Key key,
@@ -27,6 +29,9 @@ class CreateTaskListMenu extends StatelessWidget {
       child: Column(
         children: <Widget>[
           InkWell(
+            onTap: () {
+              Navigator.of(context).pushNamed("/createtaskscreen");
+            },
             child: Container(
               padding: EdgeInsets.only(left: 10),
               decoration: BoxDecoration(
@@ -74,3 +79,5 @@ class CreateTaskListMenu extends StatelessWidget {
     );
   }
 }
+
+

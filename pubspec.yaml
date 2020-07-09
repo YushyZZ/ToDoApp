@@ -23,7 +23,7 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
-  circular_check_box: ^1.0.2
+  intl: ^0.15.8
 
 
   # The following adds the Cupertino Icons font to your application.
@@ -54,6 +54,7 @@ flutter:
     - assets/img/Lists.png
     - assets/img/Tasks.png
     - assets/img/Edit.png
+    - assets/img/checked.png
      
 
   # An image asset can refer to one or more resolution-specific "variants", see

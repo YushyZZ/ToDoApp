@@ -23,7 +23,7 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
             height: size.height * 0.33,
             child: ListView.builder(
               itemBuilder: (BuildContext ctxt, int index) {
-                return new TaskWidget(tasks[index]["taskName"],tasks[index]["isScheduled"],tasks[index]["time"],tasks[index]["listColor"]);
+                return new TaskWidget(tasks[index]["taskName"],tasks[index]["isScheduled"],tasks[index]["time"],tasks[index]["listColor"],tasks[index]["isDone"]);
               },
               itemCount: tasks.length,
             ),

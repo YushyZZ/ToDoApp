@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'HomeBody.dart';
 
-class AbdorbedHome extends StatelessWidget {
-  const AbdorbedHome({
+class AbsorbedHome extends StatelessWidget {
+  const AbsorbedHome({
     Key key,
     @required this.size,
   }) : super(key: key);

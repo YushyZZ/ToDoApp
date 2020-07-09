@@ -1,27 +1,29 @@
 import 'package:flutter/material.dart';
+import '../models/tasks.dart';
 
 class TaskWidget extends StatefulWidget {
   final String taskName;
   final bool isScheduled;
   final String time;
   final Color listColor;
+  final bool isDone;
 
-  TaskWidget(this.taskName, this.isScheduled, this.time, this.listColor);
+  TaskWidget(this.taskName, this.isScheduled, this.time, this.listColor , this.isDone);
 
   @override
   _TaskWidgetState createState() =>
-      _TaskWidgetState(taskName, isScheduled, time, listColor);
+      _TaskWidgetState(taskName, isScheduled, time, listColor , isDone);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-  bool checkboxvalue = false;
 
   final String taskName;
   final bool isScheduled;
   final String time;
   final Color listColor;
+  bool isDone;
 
-  _TaskWidgetState(this.taskName, this.isScheduled, this.time, this.listColor);
+  _TaskWidgetState(this.taskName, this.isScheduled, this.time, this.listColor , this.isDone);
 
   @override
   Widget build(BuildContext context) {
@@ -35,11 +37,16 @@ class _TaskWidgetState extends State<TaskWidget> {
         children: <Widget>[
           Checkbox(
             materialTapTargetSize: MaterialTapTargetSize.padded,
-            value: checkboxvalue,
+            value: isDone,
             onChanged: (bool value) {
-              print(value);
               setState(() {
-                checkboxvalue = value;
+                isDone = value;
+                for (var index = 0; index <= tasks.length-1; index += 1) {
+                if (tasks[index]["taskName"] == taskName) {
+                  tasks[index]["isDone"] = value;
+                }
+              }
+
               });
             },
           ),
@@ -58,7 +65,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                           child: Text(
                             "$taskName",
                             style: TextStyle(
-                                color: (!checkboxvalue)
+                                color: (!isDone)
                                     ? Colors.black
                                     : Colors.grey,
                                 fontSize: 20,
@@ -71,7 +78,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Image(
-                                    image: (!checkboxvalue)
+                                    image: (!isDone)
                                         ? AssetImage(
                                             "assets/img/clock_enabled.png")
                                         : AssetImage(
@@ -80,7 +87,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   Text(
                                     "$time",
                                     style: TextStyle(
-                                        color: (!checkboxvalue)
+                                        color: (!isDone)
                                             ? Colors.black
                                             : Colors.grey),
                                   )

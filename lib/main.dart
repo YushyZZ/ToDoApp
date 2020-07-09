@@ -1,3 +1,4 @@
+import 'package:ToDoApp/CreateTaskScreen.dart';
 import 'package:flutter/material.dart';
 import 'Appbar.dart';
 import 'HomeBody.dart';
@@ -16,7 +17,10 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(home: ToDoAppHome());
+    return MaterialApp(
+      home: ToDoAppHome(),
+      routes: {"/createtaskscreen": (context) => CreateTaskScreen()},
+    );
   }
 }
 
@@ -31,6 +35,8 @@ class _ToDoAppHomeState extends State<ToDoAppHome> {
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
+
+    
     return Scaffold(
       appBar: PreferredSize(
         child: Appbar(
@@ -41,7 +47,9 @@ class _ToDoAppHomeState extends State<ToDoAppHome> {
       backgroundColor: Colors.white,
       body: Stack(children: <Widget>[
         (isPressedFloating == true)
-            ? AbdorbedHome(size: size)
+            ? GestureDetector(child: AbsorbedHome(size: size),onTap: (){setState(() {
+              isPressedFloating = false;
+            });},)
             : ToDoAppHomeBody(),
         (isPressedFloating == true)
             ? CreateTaskListMenu(size: size)
@@ -49,7 +57,6 @@ class _ToDoAppHomeState extends State<ToDoAppHome> {
       ]),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          print(isPressedFloating);
           setState(() {
             if (isPressedFloating == true) {
               isPressedFloating = false;
