@@ -1,11 +1,13 @@
+import 'package:ToDoApp/utils/Database.dart';
 import 'package:flutter/material.dart';
-import '../models/lists.dart';
 
+
+// ignore: must_be_immutable
 class ListWidgetOnCreateScreen extends StatefulWidget {
   final String listName;
-  final Color listColor;
+  final String listColor;
   final int itemCount;
-  bool isSelectedOnCreateScreen;
+  int isSelectedOnCreateScreen;
   Function(List) callback;
 
   ListWidgetOnCreateScreen(this.listName, this.listColor, this.itemCount,
@@ -19,13 +21,53 @@ class ListWidgetOnCreateScreen extends StatefulWidget {
 
 class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
   final String listName;
-  final Color listColor;
+  final String listColor;
   final int itemCount;
-  bool isSelectedOnCreateScreen;
+  int isSelectedOnCreateScreen;
   Function(List) callback;
+
+  bool realisSelectedOnCreateScreen;
+  Color realColor;
 
   _ListWidgetOnCreateScreenState(this.listName, this.listColor, this.itemCount,
       this.isSelectedOnCreateScreen, this.callback);
+
+  void initState() {
+    intToBool();
+    stringToColor();
+    super.initState();
+  }
+
+  void intToBool() {
+    if (isSelectedOnCreateScreen == 1) {
+      realisSelectedOnCreateScreen = true;
+    } else if (isSelectedOnCreateScreen == 0) {
+      realisSelectedOnCreateScreen = false;
+    }
+  }
+
+  void stringToColor() {
+    if (listColor == "Color(0xff22a1d4)") {
+      realColor = Color(0xff22a1d4);
+    }
+    else if (listColor == "Color(0xfff29a0c)") {
+      realColor =  Color(0xfff29a0c);
+    }
+    else if (listColor == "Color(0xffe7f20c)") {
+      realColor =  Color(0xffe7f20c);
+    }
+    else if (listColor == "Color(0xffc92a9c)") {
+      realColor =  Color(0xffc92a9c);
+    }
+    else if (listColor == "Color(0xff050505)") {
+      realColor =  Color(0xff050505);
+    }
+    else if (listColor == "Color(0xff20c723)") {
+      realColor =  Color(0xff20c723);
+    }
+  }
+
+
 
   @override
   Widget build(BuildContext context) {
@@ -34,26 +76,14 @@ class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        for (var index = 0; index <= lists.length - 1; index += 1) {
-          if (lists[index]["listName"] == listName) {
-            setState(() {
-              if (lists[index]["isSelectedOnCreateScreen"] == true) {
-                lists[index]["isSelectedOnCreateScreen"] = false;
-
-                callback(["List Name", Colors.black]);
-              } else if (lists[index]["isSelectedOnCreateScreen"] == false) {
-                lists[index]["isSelectedOnCreateScreen"] = true;
-
-                callback([lists[index]["listName"], lists[index]["listColor"]]);
-              }
-            });
-          }
-        }
+        DBProvider.db.selectaList(listName);
+        callback([listName , realColor]);
+        
         
       },
       child: Container(
         decoration: BoxDecoration(
-            color: listColor,
+            color: realColor,
             borderRadius: BorderRadius.all(Radius.circular(12))),
         height: size.height * 0.085,
         margin: EdgeInsets.only(left: 20, right: 20, bottom: 10),

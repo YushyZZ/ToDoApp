@@ -1,9 +1,9 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import "./models/lists.dart";
 import './models/tasks.dart';
 import 'widgets/ListWidgetOnCreateTaskScreen.dart';
 import 'package:intl/intl.dart';
+import 'package:ToDoApp/utils/Database.dart';
 
 class CreateTaskScreen extends StatefulWidget {
   @override
@@ -20,11 +20,13 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   String taskName;
   String datee;
   String timee;
-  String listName;
-  Color listColor;
+  String listName = "Select List";
+  Color listColor = Colors.black;
   bool isScheduled = false;
   bool isDated = false;
+  bool isDone = false;
 
+  // LİSTE BUTONLARINI SEÇTİĞİMZDE ONLARIN İSMİNİN VE RENGİNİN YAZDIRILMASI İÇİN 
   callback(newselectedListCustoms) {
     setState(() {
       selectedListCustoms = newselectedListCustoms;
@@ -33,17 +35,36 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     });
   }
 
+  List<Map<String, dynamic>> allListsList;
+  Future listFuture;
+
+  @override
+  void initState() {
+    super.initState();
+    listFuture = getLists();
+  }
+
+  getLists() async {
+    final _listData = await DBProvider.db.getLists();
+    return _listData;
+  }
+
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
 
     return Scaffold(
-        backgroundColor: Colors.white,
-        resizeToAvoidBottomPadding: true,
-        body: SingleChildScrollView(
-          child: Column(children: <Widget>[
+      backgroundColor: Colors.white,
+      resizeToAvoidBottomPadding: true,
+      body: SingleChildScrollView(
+        child: Column(
+          children: <Widget>[
+
+            // EN ÜSTTEKİ  DONE VE CANCEL BUTONUNUN OLDUĞU BAR
             topArea(size),
+            // OLUŞTURULACAK OLAN TASKIN ÖNGÖSTERİMİNİN OLDUĞU WİDGET
             taskPreview(size),
+            // ARADAKİ BOŞLUĞU SAĞLAMAK İÇİN SİZEBOX
             SizedBox(
               height: isDateButtonActive |
                       isScheduleButtonActive |
@@ -53,7 +74,11 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       MediaQuery.of(context).viewInsets.bottom,
             ),
             Divider(),
+             //  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR 
             oparations(size, context),
+
+              // TASK İÇİN TARİH SEÇME YERİ
+
             isDateButtonActive
                 ? Container(
                     height: size.height * 0.34,
@@ -69,6 +94,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       },
                     ))
                 : Container(),
+
+              // TASK İÇİN SAAT SEÇME YERİ
+
             isScheduleButtonActive
                 ? Container(
                     height: size.height * 0.34,
@@ -81,7 +109,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ),
                       child: CupertinoDatePicker(
                         use24hFormat: false,
-                        mode: CupertinoDatePickerMode.time,
+                        mode: CupertinoDatePickerMode.time,                   
                         onDateTimeChanged: (time) {
                           setState(() {
                             timee = DateFormat("hh:mm").format(time);
@@ -91,24 +119,55 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ),
                     ))
                 : Container(),
+
+                // TASK İÇİN LİSTE SEÇME YERİ
+
             isSelectListButtonActive
                 ? Container(
                     height: size.height * 0.34,
-                    child: ListView.builder(
-                      itemBuilder: (BuildContext ctxt, int index) {
-                        return new ListWidgetOnCreateScreen(
-                            lists[index]["listName"],
-                            lists[index]["listColor"],
-                            lists[index]["itemCount"],
-                            lists[index]["isSelectedOnCreateScreen"],
-                            callback);
+                    child: FutureBuilder(
+                      future: listFuture,
+                      builder: (BuildContext context, _listData) {
+                        switch (_listData.connectionState) {
+                          case ConnectionState.none:
+                            return Container();
+                          case ConnectionState.waiting:
+                            return Container();
+                          case ConnectionState.active:
+                            return Container();
+                          case ConnectionState.done:
+                            if (_listData.data != null) {
+                              allListsList = List<Map<String, dynamic>>.from(
+                                  _listData.data);
+                              return ListView.builder(
+                                itemCount: allListsList.length,
+                                itemBuilder: (BuildContext ctxt, int index) {
+                                  return ListWidgetOnCreateScreen(
+                                      allListsList[index]["listName"],
+                                      allListsList[index]["listColor"],
+                                      allListsList[index]["itemCount"],
+                                      allListsList[index]
+                                          ["isSelectedOnCreateScreen"],
+                                      callback);
+                                },
+                              );
+                            } else {
+                              return Container();
+                            }
+                        }
+                        return Container();
                       },
-                      itemCount: lists.length,
-                    ))
+                    ),
+                  )
                 : Container(),
-          ]),
-        ));
+          ],
+        ),
+      ),
+    );
   }
+
+  // EN ÜSTTEKİ  DONE VE CANCEL BUTONUNUN OLDUĞU BAR
+
 
   Container topArea(Size size) {
     return Container(
@@ -120,10 +179,15 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: <Widget>[
-          Container(
-            child: Text(
-              "Cancel",
-              style: TextStyle(fontSize: 20, color: Colors.blue),
+          InkWell(
+            onTap: () {
+              Navigator.pop(context);
+            },
+            child: Container(
+              child: Text(
+                "Cancel",
+                style: TextStyle(fontSize: 20, color: Colors.blue),
+              ),
             ),
           ),
           RaisedButton(
@@ -137,28 +201,29 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-              tasks.add({
-                "taskName": "$taskName",
-                "isScheduled": isScheduled,
-                "date": "$datee",
-                "time": "$timee",
-                "listName": "$listName",
-                "listColor": listColor,
-                "isDated": isDated,
-                "isDone": false,
-              });
-              for (var index = 0; index < lists.length - 1; index += 1) {
-                if (lists[index]["listName"] == listName) {
-                  lists[index]["itemCount"] += 1;
-                }
-              }
+
+
+              // TASKI EKLEME , LİSTEDEKİ ITEM SAYISINI ARTTIRMA VE TÜM LİSTELERİ TEKRARDAN DEFAULT OLARAK SEÇİLMEMİŞ YAPMA
+
+              var newTask = Task(taskName, isDated, isScheduled, datee, timee,
+                  listName, listColor.toString(), isDone);
+              DBProvider.db.addNewTask(newTask);
+              DBProvider.db.increaseItemCount(listName);
+              DBProvider.db.reFalseAllList();
+
               Navigator.pop(context);
+
+
+
+
             },
           )
         ],
       ),
     );
   }
+
+//  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR 
 
   Container oparations(Size size, BuildContext context) {
     return Container(
@@ -227,7 +292,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     child: FittedBox(
                       fit: BoxFit.contain,
                       child: Text(
-                        "${selectedListCustoms[0]}",
+                        "$listName",
                         style: TextStyle(color: Color(0xffD8D8D8)),
                       ),
                     ),
@@ -238,9 +303,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       height: 13,
                       width: 13,
                       child: RaisedButton(
-                        color: Colors.black,
+                        color: listColor,
                         onPressed: null,
-                        disabledColor: selectedListCustoms[1],
+                        disabledColor: listColor,
                         shape: CircleBorder(),
                       ),
                     ),
@@ -253,6 +318,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       ),
     );
   }
+
+  // OLUŞTURULACAK OLAN TASKIN ÖNGÖSTERİMİNİN OLDUĞU WİDGET
+
 
   Container taskPreview(Size size) {
     return Container(

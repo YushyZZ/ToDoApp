@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
-import '../models/tasks.dart';
 
+
+// ignore: must_be_immutable
 class TaskWidgetOnList extends StatefulWidget {
   final String taskName;
-  final bool isScheduled;
+  final int isScheduled;
   final String time;
-  final Color listColor;
-  final bool isDated;
+  final String listColor;
+  final int isDated;
   final String date;
-  bool isDone;
+  int isDone;
 
   TaskWidgetOnList(this.taskName, this.isScheduled, this.time, this.listColor,
       this.isDated, this.date, this.isDone);
@@ -28,15 +29,74 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   bool checkboxvalue = false;
 
   final String taskName;
-  final bool isScheduled;
+  final int isScheduled;
   final String time;
-  final Color listColor;
-  final bool isDated;
+  final String listColor;
+  final int isDated;
   final String date;
-  bool isDone;
+  int isDone;
 
   _TaskWidgetOnListState(this.taskName, this.isScheduled, this.time,
       this.listColor, this.isDated, this.date, this.isDone);
+
+
+  Color realColor;
+  bool realisScheduled;
+  bool realisDated;
+  bool realisDone;
+
+  void initState() {
+    intToBool();
+    stringToColor();
+  }
+
+  void intToBool() {
+    if (isDone == 1) {
+      realisDone = true;
+      
+    } else if (isDone == 0) {
+      realisDone = false;
+    }
+
+    if (isScheduled == 1) {
+      realisScheduled = true;
+      
+    } else if (isScheduled == 0) {
+      realisScheduled = false;
+    }
+
+    if (isDated == 1) {
+      realisDated = true;
+      
+    } else if (isDated == 0) {
+      realisDated = false;
+    }
+
+  }
+
+  // ignore: missing_return
+  void stringToColor() {
+    
+    if (listColor == "Color(0xff22a1d4)") {
+      realColor =  Color(0xff22a1d4);
+    }
+    else if (listColor == "Color(0xfff29a0c)") {
+      realColor = Color(0xfff29a0c);
+    }
+    else if (listColor == "Color(0xffe7f20c)") {
+      realColor = Color(0xffe7f20c);
+    }
+    else if (listColor == "Color(0xffc92a9c)") {
+      realColor = Color(0xffc92a9c);
+    }
+    else if (listColor == "Color(0xff050505)") {
+      realColor = Color(0xff050505);
+    }
+    else if (listColor == "Color(0xff20c723)") {
+      realColor = Color(0xff20c723);
+    }
+  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +105,7 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
     return Container(
       height: size.height * 0.082,
       width: size.width,
-      color: listColor,
+      color: realColor,
       child: Row(
         children: <Widget>[
           Container(
@@ -57,7 +117,7 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                 color: Colors.transparent,
                 border: Border.all(width: 3, color: Colors.white)),
             child: Checkbox(
-                value: isDone,
+                value: realisDone,
                 materialTapTargetSize: MaterialTapTargetSize.padded,
                 onChanged: null),
           ),
@@ -80,7 +140,7 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                               fontWeight: FontWeight.bold),
                         ),
                         Row(children: <Widget>[
-                          isDated
+                          realisDated
                               ? Container(
                                   child: Row(
                                     mainAxisAlignment:
@@ -99,10 +159,10 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                                   ),
                                 )
                               : Text(""),
-                          isScheduled
+                          realisScheduled
                               ? Container(
                                   padding: EdgeInsets.only(
-                                      left: isDated
+                                      left: realisDated
                                           ? size.width * 0.02
                                           : size.width * 0),
                                   child: Row(

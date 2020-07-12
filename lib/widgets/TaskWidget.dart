@@ -1,29 +1,73 @@
+import 'package:ToDoApp/utils/Database.dart';
 import 'package:flutter/material.dart';
-import '../models/tasks.dart';
 
 class TaskWidget extends StatefulWidget {
   final String taskName;
-  final bool isScheduled;
+  final int isScheduled;
   final String time;
-  final Color listColor;
-  final bool isDone;
+  final String listColor;
+  final int isDone;
 
-  TaskWidget(this.taskName, this.isScheduled, this.time, this.listColor , this.isDone);
+  TaskWidget(
+      this.taskName, this.isScheduled, this.time, this.listColor, this.isDone);
 
   @override
   _TaskWidgetState createState() =>
-      _TaskWidgetState(taskName, isScheduled, time, listColor , isDone);
+      _TaskWidgetState(taskName, isScheduled, time, listColor, isDone);
 }
 
 class _TaskWidgetState extends State<TaskWidget> {
-
   final String taskName;
-  final bool isScheduled;
+  final int isScheduled;
   final String time;
-  final Color listColor;
-  bool isDone;
+  String listColor;
+  int isDone;
 
-  _TaskWidgetState(this.taskName, this.isScheduled, this.time, this.listColor , this.isDone);
+  bool isDoneb;
+  Color realColor;
+
+  _TaskWidgetState(
+      this.taskName, this.isScheduled, this.time, this.listColor, this.isDone);
+
+  @override
+  void initState() {
+    intToBool();
+    stringToColor();
+    super.initState();
+  }
+
+  // ignore: missing_return
+  void intToBool() {
+    if (isDone == 1) {
+      isDoneb = true;
+      
+    } else if (isDone == 0) {
+      isDoneb = false;
+    }
+  }
+
+  // ignore: missing_return
+  void stringToColor() {
+    
+    if (listColor == "Color(0xff22a1d4)") {
+      realColor =  Color(0xff22a1d4);
+    }
+    else if (listColor == "Color(0xfff29a0c)") {
+      realColor = Color(0xfff29a0c);
+    }
+    else if (listColor == "Color(0xffe7f20c)") {
+      realColor = Color(0xffe7f20c);
+    }
+    else if (listColor == "Color(0xffc92a9c)") {
+      realColor = Color(0xffc92a9c);
+    }
+    else if (listColor == "Color(0xff050505)") {
+      realColor = Color(0xff050505);
+    }
+    else if (listColor == "Color(0xff20c723)") {
+      realColor = Color(0xff20c723);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,16 +81,15 @@ class _TaskWidgetState extends State<TaskWidget> {
         children: <Widget>[
           Checkbox(
             materialTapTargetSize: MaterialTapTargetSize.padded,
-            value: isDone,
+            value: isDoneb,
             onChanged: (bool value) {
               setState(() {
-                isDone = value;
-                for (var index = 0; index <= tasks.length-1; index += 1) {
-                if (tasks[index]["taskName"] == taskName) {
-                  tasks[index]["isDone"] = value;
-                }
-              }
+                isDoneb = value;
 
+                if (value == true) {int valueN = 1; DBProvider.db.changeisDoneStatus(taskName, valueN); }
+                else if (value == false) {int valueN = 0; DBProvider.db.changeisDoneStatus(taskName, valueN); }
+
+               
               });
             },
           ),
@@ -60,25 +103,22 @@ class _TaskWidgetState extends State<TaskWidget> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Container(
-                          
-                          width: size.width*0.8,
+                          width: size.width * 0.8,
                           child: Text(
                             "$taskName",
                             style: TextStyle(
-                                color: (!isDone)
-                                    ? Colors.black
-                                    : Colors.grey,
+                                color: (!isDoneb) ? Colors.black : Colors.grey,
                                 fontSize: 20,
                                 fontWeight: FontWeight.bold),
                           ),
                         ),
-                        isScheduled
+                        isScheduled == 1
                             ? Row(
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceEvenly,
                                 children: <Widget>[
                                   Image(
-                                    image: (!isDone)
+                                    image: (!isDoneb)
                                         ? AssetImage(
                                             "assets/img/clock_enabled.png")
                                         : AssetImage(
@@ -87,7 +127,7 @@ class _TaskWidgetState extends State<TaskWidget> {
                                   Text(
                                     "$time",
                                     style: TextStyle(
-                                        color: (!isDone)
+                                        color: (!isDoneb)
                                             ? Colors.black
                                             : Colors.grey),
                                   )
@@ -103,9 +143,9 @@ class _TaskWidgetState extends State<TaskWidget> {
                       height: 13,
                       width: 13,
                       child: RaisedButton(
-                        color: listColor,
+                        color: realColor,
                         onPressed: null,
-                        disabledColor: listColor,
+                        disabledColor: realColor,
                         shape: CircleBorder(),
                       ),
                     ),

@@ -65,7 +65,7 @@ class _ToDoAppHomeState extends State<ToDoAppHome> {
             }
           });
         },
-        backgroundColor: Colors.blue,
+        backgroundColor: Colors.white,
         child: Image.asset(
           "assets/img/plus.png",
           height: 40,

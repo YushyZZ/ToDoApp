@@ -5,7 +5,7 @@ import './ListPage.dart';
 
 class ListWidget extends StatefulWidget {
   final String listName;
-  final Color listColor;
+  final String listColor;
   final int itemCount;
 
   ListWidget(
@@ -20,7 +20,7 @@ class ListWidget extends StatefulWidget {
 class _ListWidgetState extends State<ListWidget> {
   
   final String listName;
-  final Color listColor;
+  final String listColor;
   final int itemCount;
 
   _ListWidgetState(
@@ -28,6 +28,34 @@ class _ListWidgetState extends State<ListWidget> {
       this.listColor,
       this.itemCount);
 
+  Color realColor;
+
+  
+  void initState() {
+    stringToColor();
+    super.initState();
+  }
+  
+  void stringToColor() {
+    if (listColor == "Color(0xff22a1d4)") {
+      realColor = Color(0xff22a1d4);
+    }
+    else if (listColor == "Color(0xfff29a0c)") {
+      realColor =  Color(0xfff29a0c);
+    }
+    else if (listColor == "Color(0xffe7f20c)") {
+      realColor =  Color(0xffe7f20c);
+    }
+    else if (listColor == "Color(0xffc92a9c)") {
+      realColor =  Color(0xffc92a9c);
+    }
+    else if (listColor == "Color(0xff050505)") {
+      realColor =  Color(0xff050505);
+    }
+    else if (listColor == "Color(0xff20c723)") {
+      realColor =  Color(0xff20c723);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -36,11 +64,11 @@ class _ListWidgetState extends State<ListWidget> {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        _listmodalBottomSheetMenu(context, size, listColor, listName, itemCount);
+        _listmodalBottomSheetMenu(context, size, realColor, listName, itemCount);
       },
       child: Container(
         decoration: BoxDecoration(
-            color: listColor,
+            color: realColor,
             borderRadius: BorderRadius.all(Radius.circular(12))),
         height: size.height * 0.085,
         margin: EdgeInsets.only(left: 45, top: 10, right: 10),
@@ -71,7 +99,7 @@ class _ListWidgetState extends State<ListWidget> {
   }
 }
 
-void _listmodalBottomSheetMenu(context, size, listColor, listName, itemCount) {
+void _listmodalBottomSheetMenu(context, size, realColor, listName, itemCount) {
   showModalBottomSheet(
     
     shape: RoundedRectangleBorder(
@@ -80,7 +108,7 @@ void _listmodalBottomSheetMenu(context, size, listColor, listName, itemCount) {
     isScrollControlled: true,
     context: context,
     builder: (builder) {
-      return ListPage(size,listColor,listName,itemCount);
+      return ListPage(size,realColor,listName,itemCount);
     },
   );
 }
