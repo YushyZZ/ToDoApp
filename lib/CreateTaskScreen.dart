@@ -182,6 +182,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
           InkWell(
             onTap: () {
               Navigator.pop(context);
+              Navigator.pushNamed(context,"/");
             },
             child: Container(
               child: Text(
@@ -204,7 +205,8 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
 
               // TASKI EKLEME , LİSTEDEKİ ITEM SAYISINI ARTTIRMA VE TÜM LİSTELERİ TEKRARDAN DEFAULT OLARAK SEÇİLMEMİŞ YAPMA
-
+      
+                       
               var newTask = Task(taskName, isDated, isScheduled, datee, timee,
                   listName, listColor.toString(), isDone);
               DBProvider.db.addNewTask(newTask);
@@ -212,8 +214,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
               DBProvider.db.reFalseAllList();
 
               Navigator.pop(context);
+              Navigator.pushNamed(context,"/");
 
-
+          
 
 
             },

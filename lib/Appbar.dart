@@ -1,31 +1,53 @@
 import 'package:flutter/material.dart';
 
-class Appbar extends StatelessWidget {
-  const Appbar({
-    Key key,
-    @required this.size,
-  }) : super(key: key);
+class Appbar extends StatefulWidget {
+  
+  final Size size;
+
+  Appbar(this.size);
+ 
+
+  @override
+  _AppbarState createState() => _AppbarState(this.size);
+}
+
+class _AppbarState extends State<Appbar> {
 
   final Size size;
+
+  _AppbarState(this.size);
+
+  String showingTime = "Today";
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
       title: Container(
-          margin: EdgeInsets.only(left: size.width * 0.08 ),
+          margin: EdgeInsets.only(left: widget.size.width * 0.08 ),   
           child: Text(
-            "Today",
+            showingTime,
             style: TextStyle(
                 fontSize: 41, color: Colors.black, fontWeight: FontWeight.bold),
           )),
       backgroundColor: Colors.white,
       elevation: 0,
       actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.more_horiz),
-          onPressed: () {},
-          color: Colors.blue,
-          iconSize: 30,
+        PopupMenuButton<String>(
+          icon: Icon(Icons.more_horiz , color: Colors.blue,),
+          onSelected: (value) {
+            setState(() {
+            showingTime = value;
+          });},
+          itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
+            PopupMenuItem<String>(value: "Today",child: Text("Today"),),
+            PopupMenuItem<String>(value: "Tomorrow",child: Text("Tomorrow"),),
+            PopupMenuItem<String>(value: "This Week",child: Text("This Week"),),
+            PopupMenuItem<String>(value: "Further",child: Text("Further"),),
+           
+           ] ,
+          
+        
+          
         )
       ],
     );

@@ -46,6 +46,7 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   bool realisDone;
 
   void initState() {
+    super.initState();
     intToBool();
     stringToColor();
   }

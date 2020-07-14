@@ -31,6 +31,7 @@ class _ListPageState extends State<ListPage> {
 
   
   void initState() {
+    super.initState();
     tasksofListFuture = getTasks();
   }
 

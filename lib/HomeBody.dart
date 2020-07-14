@@ -3,7 +3,6 @@ import './widgets/TaskWidget.dart';
 import './widgets/ListWidget.dart';
 import 'package:ToDoApp/utils/Database.dart';
 
-
 class ToDoAppHomeBody extends StatefulWidget {
   @override
   _ToDoAppHomeBodyState createState() => _ToDoAppHomeBodyState();
@@ -18,7 +17,7 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
   @override
   void initState() {
     super.initState();
-    
+
     taskFuture = getTasks();
     listFuture = getLists();
   }
@@ -32,6 +31,7 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
     final _listData = await DBProvider.db.getLists();
     return _listData;
   }
+
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
@@ -110,15 +110,15 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
                           if (_listData.data != null) {
                             allListsList =
                                 List<Map<String, dynamic>>.from(_listData.data);
-                            
+
                             return ListView.builder(
                                 itemCount: allListsList.length,
                                 itemBuilder: (BuildContext ctxt, int index) {
                                   return ListWidget(
-                                      allListsList[index]["listName"],
-                                      allListsList[index]["listColor"],
-                                      allListsList[index]["itemCount"],             
-                                      );
+                                    allListsList[index]["listName"],
+                                    allListsList[index]["listColor"],
+                                    allListsList[index]["itemCount"],
+                                  );
                                 });
                           } else {
                             return Container();
@@ -126,7 +126,7 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
                       }
                       return Container();
                     },
-                  ), 
+                  ),
                 )
               ],
             ),
