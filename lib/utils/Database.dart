@@ -6,6 +6,7 @@ import 'package:path/path.dart';
 import 'package:ToDoApp/models/tasks.dart';
 
 
+
 class DBProvider {
   DBProvider._();
   static final DBProvider db = DBProvider._();
@@ -79,7 +80,7 @@ class DBProvider {
   // Yeni task ekler.
   addNewTask(Task newtask) async {
     final db = await database;
-
+    
     var res = await db.rawInsert(""" 
       INSERT INTO tasks (taskName,isDated,isScheduled,date,time,listName,listColor,isDone) 
       VALUES(?,?,?,?,?,?,?,?)
@@ -97,18 +98,83 @@ class DBProvider {
     return res;
   }
 
-  //Taskları verir.
-  Future<dynamic> getTasks() async {
+  //Bugünün tasklarını verir.
+  Future<dynamic> getTasksOfToday() async {
     final db = await database;
 
-    var res = await db.query("tasks");
+    DateTime now = new DateTime.now();
+    DateTime today = DateTime(now.year,now.month,now.day);
+
+    var res = await db.rawQuery(""" 
+      SELECT * FROM tasks
+      WHERE date = ? """ , [today.toString().substring(0,10)]);
+
+    
+  
+    if (res.length == 0) {
+      return null;
+
+    } else {
+      return res;
+    }
+  }
+
+  //Yarının tasklarını verir.
+  Future<dynamic> getTasksOfTomorrow() async {
+    final db = await database;
+
+    DateTime now = new DateTime.now();
+    DateTime tomorrow = DateTime(now.year,now.month,now.day+1);
+
+    var res = await db.rawQuery(""" 
+      SELECT * FROM tasks
+      WHERE date = ? """ , [tomorrow.toString().substring(0,10)]);
 
     if (res.length == 0) {
       return null;
-    } else {
 
+    } else {
       return res;
-     
+    }
+  }
+
+  //Bu haftanın tasklarını verir.
+  Future<dynamic> getTasksOfThisWeek() async {
+    final db = await database;
+
+    DateTime now = new DateTime.now();
+    DateTime aweeklater = DateTime(now.year,now.month,now.day+7);
+
+    var res = await db.rawQuery(""" 
+      SELECT * FROM tasks
+      WHERE date < ? """ , [aweeklater.toString().substring(0,10)]);
+
+    if (res.length == 0) {
+      return null;
+
+    } else {
+      return res;
+    }
+  }
+
+  //Daha ilerisinin tasklarını verir.
+  Future<dynamic> getTasksOfFurther() async {
+    final db = await database;
+
+    DateTime now = new DateTime.now();
+    DateTime further = DateTime(now.year,now.month,now.day+7);
+
+    var res = await db.rawQuery(""" 
+      SELECT * FROM tasks
+      WHERE date > ? """ , [further.toString().substring(0,10)]);
+
+    
+
+    if (res.length == 0) {
+      return null;
+
+    } else {
+      return res;
     }
   }
 
@@ -130,8 +196,6 @@ class DBProvider {
   // Seçili listeye ait taskları görüntüler
   Future<dynamic> getTasksOfspecificList(listName) async {
     final db = await database;
-
-    print("Bağlanmaya açalışısıyor  ");
 
     var res = await db.rawQuery("""
     SELECT * FROM tasks

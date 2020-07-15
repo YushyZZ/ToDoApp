@@ -4,6 +4,10 @@ import './widgets/ListWidget.dart';
 import 'package:ToDoApp/utils/Database.dart';
 
 class ToDoAppHomeBody extends StatefulWidget {
+
+  Future funcType;
+  ToDoAppHomeBody(this.funcType);
+
   @override
   _ToDoAppHomeBodyState createState() => _ToDoAppHomeBodyState();
 }
@@ -14,16 +18,13 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
   Future taskFuture;
   Future listFuture;
 
-  @override
-  void initState() {
-    super.initState();
-
+  void getData() {
     taskFuture = getTasks();
     listFuture = getLists();
   }
 
   getTasks() async {
-    final _taskData = await DBProvider.db.getTasks();
+    final _taskData = await widget.funcType;
     return _taskData;
   }
 
@@ -32,10 +33,12 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
     return _listData;
   }
 
+  
 
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-
+    getData();
+    
     return Container(
       color: Colors.white,
       child: Column(

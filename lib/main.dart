@@ -2,6 +2,8 @@ import 'package:ToDoApp/CreateTaskScreen.dart';
 import 'package:flutter/material.dart';
 import 'Appbar.dart';
 import 'HomeBody.dart';
+import 'package:ToDoApp/utils/Database.dart';
+
 
 void main() {
   runApp(ToDoApp());
@@ -16,9 +18,10 @@ class _ToDoAppState extends State<ToDoApp> {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       home: ToDoAppHome(),
       routes: {
-        "": (context) => ToDoAppHomeBody(),
+        "": (context) => ToDoAppHomeBody(DBProvider.db.getTasksOfToday()),
         "/createtaskscreen": (context) => CreateTaskScreen()
       },
     );
@@ -31,22 +34,36 @@ class ToDoAppHome extends StatefulWidget {
 }
 
 class _ToDoAppHomeState extends State<ToDoAppHome> {
+  
+  Future type = DBProvider.db.getTasksOfToday();
   String showingTimee;
 
- 
+
+  callback(showingTime) {
+    setState(
+      () {
+        showingTimee = showingTime[0]; 
+        if (showingTimee == "Today") {type = DBProvider.db.getTasksOfToday();}  
+        else if (showingTimee == "Tomorrow") {type = DBProvider.db.getTasksOfTomorrow();} 
+        else if (showingTimee == "This Week") {type = DBProvider.db.getTasksOfThisWeek();}    
+        else if (showingTimee == "Further") {type = DBProvider.db.getTasksOfFurther();}   
+      },
+    );
+  }
+
+
   @override
   Widget build(BuildContext context) {
-    final size = MediaQuery.of(context).size;
 
+    
+    final size = MediaQuery.of(context).size;
     return Scaffold(
       appBar: PreferredSize(
-        child: Appbar(
-          size
-        ),
+        child: Appbar(size, callback),
         preferredSize: Size(size.width, size.height * 0.09),
       ),
       backgroundColor: Colors.white,
-      body: ToDoAppHomeBody(),
+      body: ToDoAppHomeBody(type),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
           setState(() {

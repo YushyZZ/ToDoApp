@@ -45,7 +45,7 @@ class _ListPageState extends State<ListPage> {
     return Wrap(
       children: <Widget>[
         Container(
-          height: widget.size.height * 0.95,
+          height: widget.size.height * 0.97,
           color: Colors.transparent,
           child: new Container(
             decoration: new BoxDecoration(

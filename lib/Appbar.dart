@@ -3,19 +3,16 @@ import 'package:flutter/material.dart';
 class Appbar extends StatefulWidget {
   
   final Size size;
+  Function(List) callback;
 
-  Appbar(this.size);
+  Appbar(this.size , this.callback);
  
 
   @override
-  _AppbarState createState() => _AppbarState(this.size);
+  _AppbarState createState() => _AppbarState();
 }
 
 class _AppbarState extends State<Appbar> {
-
-  final Size size;
-
-  _AppbarState(this.size);
 
   String showingTime = "Today";
 
@@ -36,6 +33,7 @@ class _AppbarState extends State<Appbar> {
           icon: Icon(Icons.more_horiz , color: Colors.blue,),
           onSelected: (value) {
             setState(() {
+            widget.callback([value]);
             showingTime = value;
           });},
           itemBuilder: (BuildContext context) => <PopupMenuEntry<String>>[
@@ -43,7 +41,6 @@ class _AppbarState extends State<Appbar> {
             PopupMenuItem<String>(value: "Tomorrow",child: Text("Tomorrow"),),
             PopupMenuItem<String>(value: "This Week",child: Text("This Week"),),
             PopupMenuItem<String>(value: "Further",child: Text("Further"),),
-           
            ] ,
           
         
