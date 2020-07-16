@@ -15,31 +15,12 @@ class TaskWidgetOnList extends StatefulWidget {
       this.isDated, this.date, this.isDone);
 
   @override
-  _TaskWidgetOnListState createState() => _TaskWidgetOnListState(
-      this.taskName,
-      this.isScheduled,
-      this.time,
-      this.listColor,
-      this.isDated,
-      this.date,
-      this.isDone);
-}
+  _TaskWidgetOnListState createState() => _TaskWidgetOnListState();}
 
 class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   bool checkboxvalue = false;
 
-  final String taskName;
-  final int isScheduled;
-  final String time;
-  final String listColor;
-  final int isDated;
-  final String date;
-  int isDone;
-
-  _TaskWidgetOnListState(this.taskName, this.isScheduled, this.time,
-      this.listColor, this.isDated, this.date, this.isDone);
-
-
+  
   Color realColor;
   bool realisScheduled;
   bool realisDated;
@@ -52,24 +33,24 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   }
 
   void intToBool() {
-    if (isDone == 1) {
+    if (widget.isDone == 1) {
       realisDone = true;
       
-    } else if (isDone == 0) {
+    } else if (widget.isDone == 0) {
       realisDone = false;
     }
 
-    if (isScheduled == 1) {
+    if (widget.isScheduled == 1) {
       realisScheduled = true;
       
-    } else if (isScheduled == 0) {
+    } else if (widget.isScheduled == 0) {
       realisScheduled = false;
     }
 
-    if (isDated == 1) {
+    if (widget.isDated == 1) {
       realisDated = true;
       
-    } else if (isDated == 0) {
+    } else if (widget.isDated == 0) {
       realisDated = false;
     }
 
@@ -78,22 +59,22 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
   // ignore: missing_return
   void stringToColor() {
     
-    if (listColor == "Color(0xff22a1d4)") {
+    if (widget.listColor == "Color(0xff22a1d4)") {
       realColor =  Color(0xff22a1d4);
     }
-    else if (listColor == "Color(0xfff29a0c)") {
+    else if (widget.listColor == "Color(0xfff29a0c)") {
       realColor = Color(0xfff29a0c);
     }
-    else if (listColor == "Color(0xffe7f20c)") {
+    else if (widget.listColor == "Color(0xffe7f20c)") {
       realColor = Color(0xffe7f20c);
     }
-    else if (listColor == "Color(0xffc92a9c)") {
+    else if (widget.listColor == "Color(0xffc92a9c)") {
       realColor = Color(0xffc92a9c);
     }
-    else if (listColor == "Color(0xff050505)") {
+    else if (widget.listColor == "Color(0xff050505)") {
       realColor = Color(0xff050505);
     }
-    else if (listColor == "Color(0xff20c723)") {
+    else if (widget.listColor == "Color(0xff20c723)") {
       realColor = Color(0xff20c723);
     }
   }
@@ -133,10 +114,9 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: <Widget>[
                         Text(
-                          "$taskName",
+                          "${widget.taskName}",
                           style: TextStyle(
-                              color:
-                                  (!checkboxvalue) ? Colors.white : Colors.grey,
+                              color: Colors.white,
                               fontSize: 20,
                               fontWeight: FontWeight.bold),
                         ),
@@ -149,12 +129,12 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                                     children: <Widget>[
                                       Icon(
                                         Icons.date_range,
-                                        color: Colors.grey,
+                                        color: Colors.white54,
                                         size: 17,
                                       ),
                                       Text(
-                                        " $date",
-                                        style: TextStyle(color: Colors.grey),
+                                        " ${widget.date}",
+                                        style: TextStyle(color: Colors.white54),
                                       )
                                     ],
                                   ),
@@ -172,11 +152,11 @@ class _TaskWidgetOnListState extends State<TaskWidgetOnList> {
                                     children: <Widget>[
                                       Image(
                                         image: AssetImage(
-                                            "assets/img/clock_disabled.png"),
+                                            "assets/img/clock_enabledOnListPage.png"),
                                       ),
                                       Text(
-                                        "$time",
-                                        style: TextStyle(color: Colors.grey),
+                                        " ${widget.time}",
+                                        style: TextStyle(color: Colors.white54),
                                       )
                                     ],
                                   ),

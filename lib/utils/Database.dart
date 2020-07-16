@@ -7,6 +7,7 @@ import 'package:ToDoApp/models/tasks.dart';
 
 
 
+
 class DBProvider {
   DBProvider._();
   static final DBProvider db = DBProvider._();

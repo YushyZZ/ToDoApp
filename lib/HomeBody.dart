@@ -4,7 +4,6 @@ import './widgets/ListWidget.dart';
 import 'package:ToDoApp/utils/Database.dart';
 
 class ToDoAppHomeBody extends StatefulWidget {
-
   Future funcType;
   ToDoAppHomeBody(this.funcType);
 
@@ -33,12 +32,10 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
     return _listData;
   }
 
-  
-
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
     getData();
-    
+
     return Container(
       color: Colors.white,
       child: Column(
@@ -72,7 +69,11 @@ class _ToDoAppHomeBodyState extends State<ToDoAppHomeBody> {
                                 allTasksList[index]["isDone"]);
                           });
                     } else {
-                      return Container();
+                      return Container(
+                        
+                        child: Text("There isn't any task at this time yet.",style: TextStyle(color: Colors.grey),),
+                        padding: EdgeInsets.only(top: size.height*0.13),
+                      );
                     }
                 }
                 return Container();

@@ -15,22 +15,14 @@ class ListWidgetOnCreateScreen extends StatefulWidget {
 
   @override
   _ListWidgetOnCreateScreenState createState() =>
-      _ListWidgetOnCreateScreenState(
-          listName, listColor, itemCount, isSelectedOnCreateScreen, callback);
+      _ListWidgetOnCreateScreenState();
 }
 
 class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
-  final String listName;
-  final String listColor;
-  final int itemCount;
-  int isSelectedOnCreateScreen;
-  Function(List) callback;
 
   bool realisSelectedOnCreateScreen;
   Color realColor;
 
-  _ListWidgetOnCreateScreenState(this.listName, this.listColor, this.itemCount,
-      this.isSelectedOnCreateScreen, this.callback);
 
   void initState() {
     intToBool();
@@ -39,30 +31,30 @@ class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
   }
 
   void intToBool() {
-    if (isSelectedOnCreateScreen == 1) {
+    if (widget.isSelectedOnCreateScreen == 1) {
       realisSelectedOnCreateScreen = true;
-    } else if (isSelectedOnCreateScreen == 0) {
+    } else if (widget.isSelectedOnCreateScreen == 0) {
       realisSelectedOnCreateScreen = false;
     }
   }
 
   void stringToColor() {
-    if (listColor == "Color(0xff22a1d4)") {
+    if (widget.listColor == "Color(0xff22a1d4)") {
       realColor = Color(0xff22a1d4);
     }
-    else if (listColor == "Color(0xfff29a0c)") {
+    else if (widget.listColor == "Color(0xfff29a0c)") {
       realColor =  Color(0xfff29a0c);
     }
-    else if (listColor == "Color(0xffe7f20c)") {
+    else if (widget.listColor == "Color(0xffe7f20c)") {
       realColor =  Color(0xffe7f20c);
     }
-    else if (listColor == "Color(0xffc92a9c)") {
+    else if (widget.listColor == "Color(0xffc92a9c)") {
       realColor =  Color(0xffc92a9c);
     }
-    else if (listColor == "Color(0xff050505)") {
+    else if (widget.listColor == "Color(0xff050505)") {
       realColor =  Color(0xff050505);
     }
-    else if (listColor == "Color(0xff20c723)") {
+    else if (widget.listColor == "Color(0xff20c723)") {
       realColor =  Color(0xff20c723);
     }
   }
@@ -76,8 +68,8 @@ class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        DBProvider.db.selectaList(listName);
-        callback([listName , realColor]);
+        DBProvider.db.selectaList(widget.listName);
+        widget.callback([widget.listName , realColor]);
         
         
       },
@@ -95,7 +87,7 @@ class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
               Container(
                 margin: EdgeInsets.only(left: 10, top: 5),
                 child: Text(
-                  "$listName",
+                  "${widget.listName}",
                   style: TextStyle(
                       color: Colors.white,
                       fontSize: 20,
@@ -105,7 +97,7 @@ class _ListWidgetOnCreateScreenState extends State<ListWidgetOnCreateScreen> {
               Container(
                 margin: EdgeInsets.only(left: 10, top: 5),
                 child: Text(
-                  "${itemCount.toString()} tasks",
+                  "${widget.itemCount.toString()} tasks",
                   style: TextStyle(color: Colors.white),
                 ),
               )

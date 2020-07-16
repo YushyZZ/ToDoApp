@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'Appbar.dart';
 import 'HomeBody.dart';
 import 'package:ToDoApp/utils/Database.dart';
+import 'package:flutter/services.dart';
 
 
 void main() {
@@ -17,6 +18,12 @@ class ToDoApp extends StatefulWidget {
 class _ToDoAppState extends State<ToDoApp> {
   @override
   Widget build(BuildContext context) {
+    
+    SystemChrome.setPreferredOrientations([
+        DeviceOrientation.portraitUp,
+        DeviceOrientation.portraitDown,
+      ]);
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       home: ToDoAppHome(),

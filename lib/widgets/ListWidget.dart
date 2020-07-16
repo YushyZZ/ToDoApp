@@ -14,20 +14,11 @@ class ListWidget extends StatefulWidget {
       this.itemCount);
 
   @override
-  _ListWidgetState createState() => _ListWidgetState(listName,listColor,itemCount);
+  _ListWidgetState createState() => _ListWidgetState();
 }
 
 class _ListWidgetState extends State<ListWidget> {
   
-  final String listName;
-  final String listColor;
-  final int itemCount;
-
-  _ListWidgetState(
-      this.listName,
-      this.listColor,
-      this.itemCount);
-
   Color realColor;
 
   
@@ -37,22 +28,22 @@ class _ListWidgetState extends State<ListWidget> {
   }
   
   void stringToColor() {
-    if (listColor == "Color(0xff22a1d4)") {
+    if (widget.listColor == "Color(0xff22a1d4)") {
       realColor = Color(0xff22a1d4);
     }
-    else if (listColor == "Color(0xfff29a0c)") {
+    else if (widget.listColor == "Color(0xfff29a0c)") {
       realColor =  Color(0xfff29a0c);
     }
-    else if (listColor == "Color(0xffe7f20c)") {
+    else if (widget.listColor == "Color(0xffe7f20c)") {
       realColor =  Color(0xffe7f20c);
     }
-    else if (listColor == "Color(0xffc92a9c)") {
+    else if (widget.listColor == "Color(0xffc92a9c)") {
       realColor =  Color(0xffc92a9c);
     }
-    else if (listColor == "Color(0xff050505)") {
+    else if (widget.listColor == "Color(0xff050505)") {
       realColor =  Color(0xff050505);
     }
-    else if (listColor == "Color(0xff20c723)") {
+    else if (widget.listColor == "Color(0xff20c723)") {
       realColor =  Color(0xff20c723);
     }
   }
@@ -64,7 +55,7 @@ class _ListWidgetState extends State<ListWidget> {
     return InkWell(
       borderRadius: BorderRadius.circular(12),
       onTap: () {
-        _listmodalBottomSheetMenu(context, size, realColor, listName, itemCount);
+        _listmodalBottomSheetMenu(context, size, realColor, widget.listName, widget.itemCount);
       },
       child: Container(
         decoration: BoxDecoration(
@@ -78,7 +69,7 @@ class _ListWidgetState extends State<ListWidget> {
             Container(
               margin: EdgeInsets.only(left: 10, top: 5),
               child: Text(
-                "$listName",
+                "${widget.listName}",
                 style: TextStyle(
                     color: Colors.white,
                     fontSize: 20,
@@ -88,7 +79,7 @@ class _ListWidgetState extends State<ListWidget> {
             Container(
               margin: EdgeInsets.only(left: 10, top: 5),
               child: Text(
-                "${itemCount.toString()} tasks",
+                "${widget.itemCount.toString()} tasks",
                 style: TextStyle(color: Colors.white),
               ),
             )

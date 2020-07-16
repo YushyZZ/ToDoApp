@@ -26,7 +26,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
   bool isDated = false;
   bool isDone = false;
 
-  // LİSTE BUTONLARINI SEÇTİĞİMZDE ONLARIN İSMİNİN VE RENGİNİN YAZDIRILMASI İÇİN 
+  // LİSTE BUTONLARINI SEÇTİĞİMZDE ONLARIN İSMİNİN VE RENGİNİN YAZDIRILMASI İÇİN
   callback(newselectedListCustoms) {
     setState(() {
       selectedListCustoms = newselectedListCustoms;
@@ -59,7 +59,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
       body: SingleChildScrollView(
         child: Column(
           children: <Widget>[
-
             // EN ÜSTTEKİ  DONE VE CANCEL BUTONUNUN OLDUĞU BAR
             topArea(size),
             // OLUŞTURULACAK OLAN TASKIN ÖNGÖSTERİMİNİN OLDUĞU WİDGET
@@ -74,10 +73,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       MediaQuery.of(context).viewInsets.bottom,
             ),
             Divider(),
-             //  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR 
+            //  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR
             oparations(size, context),
 
-              // TASK İÇİN TARİH SEÇME YERİ
+            // TASK İÇİN TARİH SEÇME YERİ
 
             isDateButtonActive
                 ? Container(
@@ -95,7 +94,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     ))
                 : Container(),
 
-              // TASK İÇİN SAAT SEÇME YERİ
+            // TASK İÇİN SAAT SEÇME YERİ
 
             isScheduleButtonActive
                 ? Container(
@@ -109,7 +108,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                       ),
                       child: CupertinoDatePicker(
                         use24hFormat: false,
-                        mode: CupertinoDatePickerMode.time,                   
+                        mode: CupertinoDatePickerMode.time,
                         onDateTimeChanged: (time) {
                           setState(() {
                             timee = DateFormat("hh:mm").format(time);
@@ -120,7 +119,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     ))
                 : Container(),
 
-                // TASK İÇİN LİSTE SEÇME YERİ
+            // TASK İÇİN LİSTE SEÇME YERİ
 
             isSelectListButtonActive
                 ? Container(
@@ -168,28 +167,26 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
   // EN ÜSTTEKİ  DONE VE CANCEL BUTONUNUN OLDUĞU BAR
 
-
   Container topArea(Size size) {
     return Container(
-      padding: EdgeInsets.only(
-          left: size.width * 0.03,
-          right: size.width * 0.03,
-          top: size.height * 0.05),
+      padding: EdgeInsets.only(top: size.height * 0.05),
       height: size.height * 0.1,
       child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        mainAxisAlignment: MainAxisAlignment.start,
         children: <Widget>[
-          InkWell(
-            onTap: () {
-              Navigator.pop(context);
-              Navigator.pushNamed(context,"/");
-            },
-            child: Container(
+          RaisedButton(
+              color: Colors.white,
+              elevation: 0,
               child: Text(
                 "Cancel",
                 style: TextStyle(fontSize: 20, color: Colors.blue),
               ),
-            ),
+              onPressed: () {
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/");
+              }),
+          SizedBox(
+            width: size.width * 0.53,
           ),
           RaisedButton(
             color: Colors.white,
@@ -202,23 +199,50 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   fontWeight: FontWeight.bold),
             ),
             onPressed: () {
-
-
               // TASKI EKLEME , LİSTEDEKİ ITEM SAYISINI ARTTIRMA VE TÜM LİSTELERİ TEKRARDAN DEFAULT OLARAK SEÇİLMEMİŞ YAPMA
-      
-                       
-              var newTask = Task(taskName, isDated, isScheduled, datee, timee,
-                  listName, listColor.toString(), isDone);
-              DBProvider.db.addNewTask(newTask);
-              DBProvider.db.increaseItemCount(listName);
-              DBProvider.db.reFalseAllList();
+              if (taskName == null) {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: Text("You must define a name for task."),
+                        titleTextStyle:
+                            TextStyle(fontSize: 20, color: Colors.black),
+                        elevation: 10,
+                      );
+                    });
+              } else if (datee == null) {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: Text("You must define date for task."),
+                        titleTextStyle:
+                            TextStyle(fontSize: 20, color: Colors.black),
+                        elevation: 10,
+                      );
+                    });
+              } else if (listName == "Select List") {
+                showDialog(
+                    context: context,
+                    builder: (_) {
+                      return AlertDialog(
+                        title: Text("You must define a list for task."),
+                        titleTextStyle:
+                            TextStyle(fontSize: 20, color: Colors.black),
+                        elevation: 10,
+                      );
+                    });
+              } else {
+                var newTask = Task(taskName, isDated, isScheduled, datee, timee,
+                    listName, listColor.toString(), isDone);
+                DBProvider.db.addNewTask(newTask);
+                DBProvider.db.increaseItemCount(listName);
+                DBProvider.db.reFalseAllList();
 
-              Navigator.pop(context);
-              Navigator.pushNamed(context,"/");
-
-          
-
-
+                Navigator.pop(context);
+                Navigator.pushNamed(context, "/");
+              }
             },
           )
         ],
@@ -226,94 +250,104 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
     );
   }
 
-//  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR 
+//  TASK İÇİN SEÇİLECEK ŞEYLERİ AYARLAMAMIZI SAĞLAYAN BUTONLARIN OLDUĞU BAR
 
   Container oparations(Size size, BuildContext context) {
     return Container(
       height: size.height * 0.05,
       child: Row(
         children: <Widget>[
-          IconButton(
-            icon: Icon(
-              Icons.date_range,
-              color: isDateButtonActive ? Colors.blue : Color(0xffD8D8D8),
+          Expanded(
+            flex: 1,
+            child: IconButton(
+              icon: Icon(
+                Icons.date_range,
+                color: isDateButtonActive ? Colors.blue : Color(0xffD8D8D8),
+              ),
+              onPressed: () {
+                setState(() {
+                  if (isDateButtonActive == true) {
+                    isDateButtonActive = false;
+                  } else if (isDateButtonActive == false) {
+                    isDateButtonActive = true;
+                    isScheduleButtonActive = false;
+                    isSelectListButtonActive = false;
+                    FocusScope.of(context).unfocus();
+                  }
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                if (isDateButtonActive == true) {
-                  isDateButtonActive = false;
-                } else if (isDateButtonActive == false) {
-                  isDateButtonActive = true;
-                  isScheduleButtonActive = false;
-                  isSelectListButtonActive = false;
-                  FocusScope.of(context).unfocus();
-                }
-              });
-            },
           ),
-          IconButton(
-            icon: Icon(
-              Icons.access_time,
-              color: isScheduleButtonActive ? Colors.blue : Color(0xffD8D8D8),
+          Expanded(
+            flex: 1,
+            child: IconButton(
+              icon: Icon(
+                Icons.access_time,
+                color: isScheduleButtonActive ? Colors.blue : Color(0xffD8D8D8),
+              ),
+              onPressed: () {
+                setState(() {
+                  if (isScheduleButtonActive == true) {
+                    isScheduleButtonActive = false;
+                  } else if (isScheduleButtonActive == false) {
+                    isScheduleButtonActive = true;
+                    isDateButtonActive = false;
+                    isSelectListButtonActive = false;
+                    FocusScope.of(context).unfocus();
+                  }
+                });
+              },
             ),
-            onPressed: () {
-              setState(() {
-                if (isScheduleButtonActive == true) {
-                  isScheduleButtonActive = false;
-                } else if (isScheduleButtonActive == false) {
-                  isScheduleButtonActive = true;
-                  isDateButtonActive = false;
-                  isSelectListButtonActive = false;
-                  FocusScope.of(context).unfocus();
-                }
-              });
-            },
           ),
-          InkWell(
-            splashColor: Colors.white,
-            focusColor: Colors.white,
-            highlightColor: Colors.white,
-            onTap: () {
-              setState(() {
-                if (isSelectListButtonActive == true) {
-                  isSelectListButtonActive = false;
-                } else if (isSelectListButtonActive == false) {
-                  isSelectListButtonActive = true;
-                  isDateButtonActive = false;
-                  isScheduleButtonActive = false;
-                  FocusScope.of(context).unfocus();
-                }
-              });
-            },
-            child: Container(
-              margin: EdgeInsets.only(left: size.width * 0.5),
-              child: Row(
-                children: <Widget>[
-                  Container(
-                    height: size.height * 0.03,
-                    width: size.width * 0.2,
-                    child: FittedBox(
-                      fit: BoxFit.contain,
-                      child: Text(
-                        "$listName",
-                        style: TextStyle(color: Color(0xffD8D8D8)),
+          Expanded(
+            flex: 8,
+            child: InkWell(
+              splashColor: Colors.white,
+              focusColor: Colors.white,
+              highlightColor: Colors.white,
+              onTap: () {
+                setState(() {
+                  if (isSelectListButtonActive == true) {
+                    isSelectListButtonActive = false;
+                  } else if (isSelectListButtonActive == false) {
+                    isSelectListButtonActive = true;
+                    isDateButtonActive = false;
+                    isScheduleButtonActive = false;
+                    FocusScope.of(context).unfocus();
+                  }
+                });
+              },
+              child: Container(
+                padding: EdgeInsets.only(right: size.width * 0.02),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: <Widget>[
+                    Container(
+                      height: size.height * 0.03,
+                      width: size.width * 0.2,
+                      child: FittedBox(
+                        fit: BoxFit.contain,
+                        child: Text(
+                          "$listName",
+                          style: TextStyle(color: Color(0xffD8D8D8)),
+                        ),
                       ),
                     ),
-                  ),
-                  Container(
-                    margin: EdgeInsets.only(left: size.width * 0.03),
-                    child: SizedBox(
-                      height: 13,
-                      width: 13,
-                      child: RaisedButton(
-                        color: listColor,
-                        onPressed: null,
-                        disabledColor: listColor,
-                        shape: CircleBorder(),
+                    Container(
+                      margin: EdgeInsets.only(left: size.width * 0.03),
+                      child: SizedBox(
+                        height: 13,
+                        width: 13,
+                        child: RaisedButton(
+                          color: listColor,
+                          onPressed: null,
+                          disabledColor: listColor,
+                          shape: CircleBorder(),
+                        ),
                       ),
-                    ),
-                  )
-                ],
+                    )
+                  ],
+                ),
               ),
             ),
           )
@@ -324,20 +358,20 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
 
   // OLUŞTURULACAK OLAN TASKIN ÖNGÖSTERİMİNİN OLDUĞU WİDGET
 
-
   Container taskPreview(Size size) {
     return Container(
-      //color: Colors.red,
       padding: EdgeInsets.only(left: size.width * 0.015),
       height: size.height * 0.15,
       width: size.width,
-      child: Container(
-        height: size.height * 0.15,
-        width: size.width,
-        child: Row(
-          children: <Widget>[
-            Checkbox(onChanged: null, value: false),
-            Container(
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: <Widget>[
+          Expanded(
+              flex: 1,
+              child: Container(child: Checkbox(onChanged: null, value: false))),
+          Expanded(
+            flex: 8,
+            child: Container(
               padding: EdgeInsets.only(
                   top: datee == null && timee == null
                       ? size.height * 0.05
@@ -375,7 +409,7 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                                 bool isFocused}) =>
                             null,
                         enableSuggestions: false,
-                        maxLength: 30,
+                        maxLength: 25,
                         decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'What do you want to do?',
@@ -388,7 +422,6 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                     ),
                   ),
                   Container(
-                    //color: Colors.blue,
                     child: Row(
                       children: <Widget>[
                         Container(
@@ -435,7 +468,10 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                 ],
               ),
             ),
-            Container(
+          ),
+          Expanded(
+            flex: 2,
+            child: Container(
               margin: EdgeInsets.only(left: size.width * 0.12),
               child: SizedBox(
                 height: 13,
@@ -446,9 +482,9 @@ class _CreateTaskScreenState extends State<CreateTaskScreen> {
                   shape: CircleBorder(),
                 ),
               ),
-            )
-          ],
-        ),
+            ),
+          )
+        ],
       ),
     );
   }
